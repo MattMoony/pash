@@ -1,0 +1,6 @@
+.mypy_cache
+build
+dist
+pash_cmd.egg-info
+test.cmd
+__pycache__
