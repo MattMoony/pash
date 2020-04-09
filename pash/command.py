@@ -1,17 +1,20 @@
 from __future__ import annotations
 from pash.base import Keyword
-from typing import Union, List, Callable
+from typing import Union, List, Callable, Any, Tuple, Dict, Optional
 
 def _def_callback(cmd: Command, args: List[str]) -> None:
     pass
 
 class Command(Keyword):
-    def __init__(self, cmd: str, *args, callback: Callable[[Command, List[str]], None] = _def_callback, **kwargs) -> None:
+    def __init__(self, cmd: str, *args, callback: Callable[..., None] = _def_callback, 
+                 cbargs: Union[Tuple[()], Tuple[Any]] = (), cbkwargs: Dict[str, Any] = dict(), **kwargs) -> None:
         super().__init__(cmd, *args, **kwargs)
-        self.callback: Callable[[Command, List[str]], None] = callback
+        self.callback: Callable[..., None] = callback
+        self.cbargs: Union[Tuple[()], Tuple[Any]] = cbargs
+        self.cbkwargs: Dict[str, Any] = cbkwargs
 
     def __call__(self, args: Union[str, List[str]]) -> None:
-        self.callback(self, args if isinstance(args, list) else args.split())
+        self.callback(self, args if isinstance(args, list) else args.split(), *self.cbargs, **self.cbkwargs)
 
 def _def_unkown_key(cc: CascCommand, cmdline: str) -> None:
     print('Usage: %s' % cc.usage())

@@ -29,6 +29,7 @@ class Shell(CascCommand):
                 cmdline: str = input()
                 self.parse(cmdline)
             except KeyboardInterrupt:
+                print()
                 if self.__interrupt_end:
                     self.__exited = True
                     break
