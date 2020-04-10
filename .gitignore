@@ -4,3 +4,6 @@ dist
 pash_cmd.egg-info
 test.cmd
 __pycache__
+.vscode
+venv
+docs/_*
