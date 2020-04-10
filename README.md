@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/pash/badge/?version=latest)](https://pash.readthedocs.io/en/latest/?badge=latest)
+
 # pash
 
 ---
@@ -36,6 +38,10 @@ sh.add_command(CascCommand('go', cmds=[
 ]))
 ...
 ```
+
+## Documentation
+
+The full docs are hosted [here](https://pash.readthedocs.io). (Please excuse the messiness, it's my first time working with sphinx, readthedocs, etc. ^^)
 
 ---
 
