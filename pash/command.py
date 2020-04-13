@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from typing import Union, List, Callable, Any, Tuple, Dict, Optional
+from argparse import ArgumentParser
 
 def _def_callback(cmd: Command, args: List[str]) -> None:
     """Default callback for any command (if no other callback is provided)."""
@@ -86,6 +87,10 @@ class Command(object):
         self.cbargs: Union[Tuple[()], Tuple[Any]] = cbargs
         self.cbkwargs: Dict[str, Any] = cbkwargs or dict()
         self.parent: Command = parent
+        self.parser = ArgumentParser()
+
+    def add_arg(self, *args, **kwargs) -> None:
+        self.parser.add_argument(*args, **kwargs)
 
     def matches(self, args: Union[str, List[str]]) -> bool:
         """
@@ -131,11 +136,16 @@ class Command(object):
 
     def usage(self) -> str:
         """Will return how to use the command."""
-        return self.trace()
+        return self.trace() + ' ' + self.parser.format_help()[self.parser.format_help().index('['):]
 
     def __call__(self, args: Union[str, List[str]]) -> None:
         """Will call the callback function."""
-        self.callback(self, args if isinstance(args, list) else args.split(), *self.cbargs, **self.cbkwargs)
+        try:
+            ar = self.parser.parse_args(args if isinstance(args, list) else args.split())
+        except SystemExit:
+            print(self.usage())
+            return
+        self.callback(self, args if isinstance(args, list) else args.split(), *self.cbargs, **self.cbkwargs, **vars(ar))
 
     def __str__(self) -> str:
         """Returns a nicely formatted help-string."""
@@ -248,4 +258,4 @@ class CascCommand(Command):
     def usage(self) -> str:
         """Returns the trace + options to use with this command."""
         t: str = self.trace()
-        return '{} [{}]'.format(t, '|'.join([c.usage().replace(t+' ', '') for c in self.cmds]))
+        return '{} [{}]'.format(t, '|'.join([c.trace().replace(t+' ', '') for c in self.cmds]))

@@ -100,5 +100,3 @@ class Shell(CascCommand):
     def print_help(self) -> None:
         """Prints all available commands and their short help summaries."""
         misc.print_table([[ str(c).split('\t')[0], str(c).split('\t')[1], ] for c in self.cmds], align=misc.TALIGN.LEFT)
-        print(len(self.helpc.cmds))
-        print(len(self.cmds))

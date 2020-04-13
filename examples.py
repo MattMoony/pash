@@ -18,6 +18,9 @@ def shargs(cmd: Command, args: List[str]) -> None:
 def bye(cmd: Command, args: List[str]) -> None:
     sh.exit()
 
+def pow_num(cmd: Command, args: List[str], n: int) -> None:
+    print(n**2)
+
 sh: Shell = Shell(prompt='> ', interrupt_end=True)
 sh.add_cmd(Command('ping', callback=ping))
 sh.add_cmd(CascCommand('a', cmds=[
@@ -30,5 +33,8 @@ sh.add_cmd(CascCommand('a', cmds=[
 sh.add_cmd(Command('clear', 'cls', callback=clear))
 sh.add_cmd(Command('shargs', callback=shargs))
 sh.add_cmd(Command('exit', 'quit', 'bye', callback=bye))
+test = Command('pow', callback=pow_num)
+test.add_arg('-n', dest='n', type=int, help='Number ... ', required=True)
+sh.add_cmd(test)
 
 sh.prompt_until_exit()
