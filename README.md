@@ -1,4 +1,4 @@
-[![Documentation Status](https://readthedocs.org/projects/pash/badge/?version=latest)](https://pash.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/pash/badge/?version=latest)](https://pash.readthedocs.io/en/latest/?badge=latest) ![pypi version](https://img.shields.io/pypi/v/pash-cmd) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pash-cmd) ![GitHub License](https://img.shields.io/github/license/mattmoony/pash)
 
 # pash
 
