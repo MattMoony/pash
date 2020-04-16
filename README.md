@@ -11,6 +11,14 @@ I've decided to write my own package for it, so that I won't have to think of a 
 
 I hope it can be of some use to other Python programmers as well, as it'll hopefully make my life a lot easier.
 
+## Install
+
+Installing `pash` is very easy thanks to pip:
+
+```bash
+python3 -m pip install pash-cmd
+```
+
 ## Usage
 
 First, create a shell ...
