@@ -12,6 +12,7 @@ setuptools.setup(
     long_description=long_desc,
     long_description_content_type="text/markdown",
     url="https://github.com/MattMoony/pash",
+    download_url="https://github.com/MattMoony/pash/archive/v_001.tar.gz",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
