@@ -3,7 +3,7 @@
 from __future__ import annotations
 import pash.misc as misc
 from pash.command import Command, CascCommand
-from typing import List, Callable
+from typing import List, Callable, Union
 
 def _def_unknown_cmd(cc: CascCommand, cmdline: str) -> None:
     """Default callback for unknown commands"""
@@ -100,3 +100,7 @@ class Shell(CascCommand):
     def print_help(self) -> None:
         """Prints all available commands and their short help summaries."""
         misc.print_table([[ str(c).split('\t')[0], str(c).split('\t')[1], ] for c in self.cmds], align=misc.TALIGN.LEFT)
+
+    def __call__(self, args: Union[str, List[str]]) -> None:
+        """Does nothing - overrides parent."""
+        return
