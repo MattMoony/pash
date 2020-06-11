@@ -21,6 +21,11 @@ def bye(cmd: Command, args: List[str]) -> None:
 def pow_num(cmd: Command, args: List[str], n: int) -> None:
     print(n**2)
 
+def echo(cmd: Command, args: List[str], params: List[str]) -> None:
+    if not params:
+        return
+    print(params[0])
+
 sh: Shell = Shell(prompt='> ', interrupt_end=True)
 sh.add_cmd(Command('ping', callback=ping))
 sh.add_cmd(CascCommand('a', cmds=[
@@ -33,6 +38,9 @@ sh.add_cmd(CascCommand('a', cmds=[
 sh.add_cmd(Command('clear', 'cls', callback=clear))
 sh.add_cmd(Command('shargs', callback=shargs))
 sh.add_cmd(Command('exit', 'quit', 'bye', callback=bye))
+e = Command('echo', callback=echo)
+e.add_arg('params', type=str, nargs='*')
+sh.add_cmd(e)
 test = Command('pow', callback=pow_num)
 test.add_arg('-n', dest='n', type=int, help='Number ... ', required=True)
 sh.add_cmd(test)

@@ -1,6 +1,7 @@
 """The actual command classes"""
 
 from __future__ import annotations
+import re
 from typing import Union, List, Callable, Any, Tuple, Dict, Optional
 from argparse import ArgumentParser
 
@@ -165,6 +166,8 @@ class CascCommand(Command):
     ----------
     cmds : List[Command]
         A list of all availabe sub-commands.
+    sep : str
+        The argument separator.
     unknown_key : Callable[[CascCommand, str], None]
         The function that will be called, if an unknown sub-command is encountered.
 
@@ -187,6 +190,7 @@ class CascCommand(Command):
                        cbargs: Union[Tuple[()], Tuple[Any]] = (), 
                        cbkwargs: Optional[Dict[str, Any]] = None, 
                        parent: Optional[Command] = None,
+                       sep: str = r'\s(?:(?=(?:[^"]*"[^"]*")+[^"]*$)|(?=[^"]*$))',
                 ) -> None:
         """
         Parameters
@@ -219,10 +223,14 @@ class CascCommand(Command):
         parent : Optional[Command]
             The parent of the casc-command; its supercommand.
             Default is None.
+        sep : str
+            The argument separator.
+            Default is r'\s(?:(?=(?:[^"]*"[^"]*")+[^"]*$)|(?=[^"]*$))'.
         """
         super().__init__(cmd, *aliases, callback=callback, case_sensitive=case_sensitive, hint=hint, cbargs=cbargs, cbkwargs=cbkwargs, parent=parent)
         self.cmds: List[Command] = cmds or []
         self.unknown_key: Callable[[CascCommand, str], None] = unknown_key
+        self.sep: str = sep
         for c in self.cmds:
             c.parent = self
 
@@ -245,10 +253,11 @@ class CascCommand(Command):
         if not c:
             self.unknown_key(self, cmdline)
             return
+        args = re.split(self.sep, cmdline)[1:]
         if isinstance(c[0], CascCommand):
-            c[0].parse(' '.join(cmdline.split()[1:]))
+            c[0].parse(' '.join(args))
             return
-        c[0](cmdline.split()[1:])
+        c[0]([a.replace('"', '') for a in args])
 
     def add_cmd(self, cmd: Command) -> None:
         """Adds a command to the sub-commands list."""

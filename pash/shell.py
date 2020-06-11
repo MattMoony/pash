@@ -41,7 +41,8 @@ class Shell(CascCommand):
     """
     def __init__(self, prompt: str = '$ ', 
                        interrupt_end: bool = False, 
-                       unknown_cmd: Callable[[CascCommand, str], None] = _def_unknown_cmd
+                       unknown_cmd: Callable[[CascCommand, str], None] = _def_unknown_cmd,
+                       sep: str = r'\s(?:(?=(?:[^"]*"[^"]*")+[^"]*$)|(?=[^"]*$))'
                 ) -> None:
         """
         Parameters
@@ -55,8 +56,11 @@ class Shell(CascCommand):
         unknown_cmd : Callable[[CascCommand, str], None]
             The function that will be called, when the shell encounters an unknown command.
             Default is _def_unknown_cmd.
+        sep : str
+            The argument separator.
+            Default is r'\s(?:(?=(?:[^"]*"[^"]*")+[^"]*$)|(?=[^"]*$))'.
         """
-        super().__init__('', unknown_key=unknown_cmd)
+        super().__init__('', unknown_key=unknown_cmd, sep=sep)
         self.__interrupt_end: bool = interrupt_end
         self.__exited: bool = False
         self.prompt: str = prompt
