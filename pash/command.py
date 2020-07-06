@@ -246,8 +246,8 @@ class CascCommand(Command):
             Not the actual complete cmdline, but the cmdline after the argument
             that triggered this command.
         """
-        if not cmdline.strip():
-            self('')
+        if not cmdline.strip() or cmdline.strip().startswith('-'):
+            self(cmdline.strip())
             return
         c: List[Command] = list(filter(lambda c: c.matches(cmdline), self.cmds))
         if not c:
@@ -259,8 +259,14 @@ class CascCommand(Command):
             return
         c[0]([a.replace('"', '') for a in args])
 
+    @classmethod
+    def _check_cmd_validity(cls, cmd: Command) -> None:
+        if any(map(lambda a: a.startswith('-'), cmd.aliases)):
+            raise Exception('Command is not allowed to start with `-` (might be confused with argparse argument)... ')
+
     def add_cmd(self, cmd: Command) -> None:
         """Adds a command to the sub-commands list."""
+        CascCommand._check_cmd_validity(cmd)
         cmd.parent = self
         self.cmds.append(cmd)
 

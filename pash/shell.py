@@ -82,6 +82,7 @@ class Shell(CascCommand):
         cmd : Command
             The command to-be-added.
         """
+        Shell._check_cmd_validity(cmd)
         self.cmds.append(cmd)
         self.helpc.add_cmd(Command(*cmd.aliases, 
             case_sensitive=cmd.case_sensitive, 
