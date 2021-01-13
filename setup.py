@@ -5,14 +5,14 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="pash-cmd",
-    version="0.0.4",
+    version="0.0.5",
     author="MattMoony",
     author_email="m4ttm00ny@gmail.com",
     description="An interactive shell for Python scripts.",
     long_description=long_desc,
     long_description_content_type="text/markdown",
     url="https://github.com/MattMoony/pash",
-    download_url="https://github.com/MattMoony/pash/archive/v_004.tar.gz",
+    download_url="https://github.com/MattMoony/pash/archive/v_005.tar.gz",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -20,7 +20,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'colorama==0.4.3',
+        'colorama==0.4.4',
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.5',
 )
