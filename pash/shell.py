@@ -1,6 +1,5 @@
 """Home to the pash shell and its default functions."""
 
-from __future__ import annotations
 import pash.misc as misc
 from pash.command import Command, CascCommand
 from typing import List, Callable, Union
@@ -43,7 +42,7 @@ class Shell(CascCommand):
                        interrupt_end: bool = False, 
                        unknown_cmd: Callable[[CascCommand, str], None] = _def_unknown_cmd,
                        sep: str = r'\s(?:(?=(?:[^"]*"[^"]*")+[^"]*$)|(?=[^"]*$))'
-                ) -> None:
+                ):
         """
         Parameters
         ----------

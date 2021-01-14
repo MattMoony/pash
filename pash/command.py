@@ -1,6 +1,5 @@
 """The actual command classes"""
 
-from __future__ import annotations
 import re
 from typing import Union, List, Callable, Any, Tuple, Dict, Optional
 from argparse import ArgumentParser
@@ -53,8 +52,8 @@ class Command(object):
                        hint: str = '', 
                        cbargs: Union[Tuple[()], Tuple[Any]] = (), 
                        cbkwargs: Optional[Dict[str, Any]] = None, 
-                       parent: Optional[Command] = None
-                ) -> None:
+                       parent: Optional["Command"] = None
+                ):
         """
         Parameters
         ----------
@@ -87,7 +86,7 @@ class Command(object):
         self.help: str = hint
         self.cbargs: Union[Tuple[()], Tuple[Any]] = cbargs
         self.cbkwargs: Dict[str, Any] = cbkwargs or dict()
-        self.parent: Command = parent
+        self.parent: "Command" = parent
         self.parser = ArgumentParser()
 
     def add_arg(self, *args, **kwargs) -> None:
@@ -112,7 +111,7 @@ class Command(object):
         cmd: str = (args[0] if isinstance(args, list) else args.split()[0]).strip()
         return cmd in self.aliases or (cmd.lower() in [a.lower() for a in self.aliases] and not self.case_sensitive)
 
-    def trace(self, cu: Optional[Command] = None) -> str:
+    def trace(self, cu: Optional["Command"] = None) -> str:
         """
         Will compute and return the command's trace.
 
@@ -184,14 +183,14 @@ class CascCommand(Command):
                        *aliases: str,
                        cmds: Optional[List[Command]] = None, 
                        case_sensitive: bool = True,
-                       unknown_key: Callable[[CascCommand, str], None] = _def_unkown_key, 
+                       unknown_key: Callable[["CascCommand", str], None] = _def_unkown_key, 
                        callback: Callable[..., None] = _def_unkown_key, 
                        hint: str = '',
                        cbargs: Union[Tuple[()], Tuple[Any]] = (), 
                        cbkwargs: Optional[Dict[str, Any]] = None, 
                        parent: Optional[Command] = None,
                        sep: str = r'\s(?:(?=(?:[^"]*"[^"]*")+[^"]*$)|(?=[^"]*$))',
-                ) -> None:
+                ):
         """
         Parameters
         ----------
@@ -229,7 +228,7 @@ class CascCommand(Command):
         """
         super().__init__(cmd, *aliases, callback=callback, case_sensitive=case_sensitive, hint=hint, cbargs=cbargs, cbkwargs=cbkwargs, parent=parent)
         self.cmds: List[Command] = cmds or []
-        self.unknown_key: Callable[[CascCommand, str], None] = unknown_key
+        self.unknown_key: Callable[["CascCommand", str], None] = unknown_key
         self.sep: str = sep
         for c in self.cmds:
             c.parent = self

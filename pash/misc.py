@@ -87,7 +87,7 @@ class ProgressBar(object):
         Refresh/redraw the progress bar.
     """
 
-    def __init__(self, max: int, title: str = '', val: float = 0.) -> None:
+    def __init__(self, max: int, title: str = '', val: float = 0.):
         """
         Parameters
         ----------
