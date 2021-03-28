@@ -4,7 +4,7 @@ import re
 from typing import Union, List, Callable, Any, Tuple, Dict, Optional
 from argparse import ArgumentParser
 
-def _def_callback(cmd: Command, args: List[str]) -> None:
+def _def_callback(cmd: "Command", args: List[str]) -> None:
     """Default callback for any command (if no other callback is provided)."""
     pass
 
@@ -151,7 +151,7 @@ class Command(object):
         """Returns a nicely formatted help-string."""
         return self.aliases[0] + '\t' + self.help
 
-def _def_unkown_key(cc: CascCommand, cmdline: str) -> None:
+def _def_unkown_key(cc: "CascCommand", cmdline: str) -> None:
     """The default callback for an unknown key."""
     print('Usage: %s' % cc.usage())
 
